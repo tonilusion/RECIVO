@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firma Digital</title>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    canvas { border: 1px solid #000; width: 100%; height: 200px; margin-top: 10px; }
+    input, button { display: block; margin: 10px 0; width: 100%; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Acuse de Recibo</h1>
+
+  <label for="name">Nombre:</label>
+  <input id="name" type="text" placeholder="Escribe el nombre">
+
+  <label for="address">Dirección:</label>
+  <input id="address" type="text" placeholder="Escribe la dirección">
+
+  <label for="dni">DNI:</label>
+  <input id="dni" type="text" placeholder="Escribe el DNI">
+
+  <h3>Firma:</h3>
+  <canvas id="signature-pad"></canvas>
+  <button id="clear">Borrar Firma</button>
+  <button id="save">Guardar Datos</button>
+
+  <script>
+    const canvas = document.getElementById('signature-pad');
+    const signaturePad = new SignaturePad(canvas);
+
+    document.getElementById('clear').addEventListener('click', () => {
+      signaturePad.clear();
+    });
+
+    document.getElementById('save').addEventListener('click', () => {
+      const name = document.getElementById('name').value;
+      const address = document.getElementById('address').value;
+      const dni = document.getElementById('dni').value;
+
+      if (!name || !address || !dni) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+
+      if (signaturePad.isEmpty()) {
+        alert('Por favor, firma antes de guardar.');
+        return;
+      }
+
+      const signature = signaturePad.toDataURL(); // Firma en formato imagen
+      const data = { name, address, dni, signature };
+
+      console.log('Datos guardados:', data); // Aquí podrías enviar los datos a un servidor
+      alert('Datos y firma guardados correctamente. Revisa la consola para más información.');
+    });
+  </script>
+</body>
+</html>
